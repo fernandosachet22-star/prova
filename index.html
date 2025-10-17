@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Partidas de Futebol</title>
+<style>
+  body { 
+    font-family: Arial, sans-serif; 
+    background-color: #f4f4f4; 
+    margin: 20px; 
+  }
+
+  h1 { 
+    margin-bottom: 10px; 
+    text-align: center;
+    font-size: 1.8em;
+  }
+
+  .search-container {
+    text-align: center;
+    margin: 15px 0;
+  }
+
+  .search-container input {
+    width: 90%;
+    max-width: 400px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    font-size: 1em;
+  }
+
+  .tabs { 
+    display: flex; 
+    overflow-x: auto; 
+    margin-bottom: 10px; 
+    cursor: pointer; 
+    border-bottom: 2px solid #ccc;
+  }
+  .tab { 
+    padding: 10px 20px; 
+    background: #ddd; 
+    margin-right: 5px; 
+    border-radius: 5px 5px 0 0; 
+    flex-shrink: 0; 
+    white-space: nowrap;
+    transition: background 0.3s ease;
+  }
+  .tab:hover {
+    background: #59b3dc;
+  }
+  .tab.active { 
+    background: #f4f2f2; 
+    color: rgb(5, 4, 4); 
+    font-weight: bold; 
+  }
+
+  .tab-content { 
+    display: none; 
+  }
+  .tab-content.active { 
+    display: block; 
+  }
+
+  .table-wrapper { 
+    overflow-x: auto; 
+    margin-bottom: 20px; 
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  table { 
+    width: 100%; 
+    border-collapse: collapse; 
+    min-width: 600px; 
+  }
+  th, td { 
+    padding: 10px; 
+    text-align: left; 
+    border: 1px solid #d2e273; 
+  }
+  th { 
+    background-color: #fcfdfc; 
+    color: white; 
+  }
+  tr:nth-child(even) { 
+    background-color: #e8eee8; 
+  }
+
+  .adiado { 
+    font-weight: bold; 
+    color: red; 
+  }
+
+  h3 {
+    margin-top: 20px;
+    background: #4c96af;
+    color: white;
+    padding: 8px;
+    border-radius: 5px;
+    font-size: 1.1em;
+  }
+
+  
+  footer {
+    text-align: center;
+    margin-top: 30px;
+    padding: 15px;
+    background: #bcddf0;
+    color: white;
+    font-weight: bold;
+    border-radius: 8px;
+    font-size: 1em;
+  }
+
+  @media (max-width: 900px) {
+    body { margin: 10px; }
+    h1 { font-size: 1.5em; }
+
+    .tab { 
+      padding: 8px 15px; 
+      font-size: 0.9em; 
+    }
+
+    table {
+      min-width: 100%;
+      font-size: 0.9em;
+    }
+    th, td {
+      padding: 8px;
+    }
+  }
+
+  @media (max-width: 600px) {
+    h1 { font-size: 1.3em; }
+
+    .tab {
+      padding: 6px 10px;
+      font-size: 0.85em;
+    }
+
+    th, td {
+      padding: 6px;
+      font-size: 0.85em;
+    }
+
+    table, thead, tbody, th, td, tr {
+      display: block;
+    }
+
+    thead tr {
+      display: none; 
+    }
+
+    tr {
+      margin-bottom: 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 10px;
+      background: #fff;
+    }
+
+    td {
+      border: none;
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 10px;
+    }
+
+    td::before {
+      content: attr(data-label);
+      font-weight: bold;
+      color: #333;
+    }
+
+    footer {
+      font-size: 0.9em;
+      padding: 10px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<h1>Saite de resultados de futebol</h1>
+
+<div class="search-container">
+  <input type="text" id="searchInput" placeholder="Buscar por time, liga ou status...">
+</div>
+
+<div class="tabs">
+  <div class="tab active" data-tab="all">Todos</div>
+  <div class="tab" data-tab="finalizado">Finalizados</div>
+  <div class="tab" data-tab="adiado">Adiados</div>
+  <div class="tab" data-tab="ligas">Por Liga</div>
+</div>
+
+<div id="all" class="tab-content active">
+  <div class="table-wrapper">
+    <table id="matchesTableAll">
+      <thead>
+        <tr>
+          <th>Data</th>
+          <th>Liga</th>
+          <th>Time Casa</th>
+          <th>Placar</th>
+          <th>Time Visitante</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</div>
+
+<div id="finalizado" class="tab-content">
+  <div class="table-wrapper">
+    <table id="matchesTableFinished">
+      <thead>
+        <tr>
+          <th>Data</th>
+          <th>Liga</th>
+          <th>Time Casa</th>
+          <th>Placar</th>
+          <th>Time Visitante</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</div>
+
+<div id="adiado" class="tab-content">
+  <div class="table-wrapper">
+    <table id="matchesTablePostponed">
+      <thead>
+        <tr>
+          <th>Data</th>
+          <th>Liga</th>
+          <th>Time Casa</th>
+          <th>Placar</th>
+          <th>Time Visitante</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</div>
+
+<div id="ligas" class="tab-content">
+  <div class="table-wrapper">
+    <h3>Inglaterra - Premier League</h3>
+    <table id="ligaEngland">
+      <thead>
+        <tr>
+          <th>Data</th>
+          <th>Time Casa</th>
+          <th>Placar</th>
+          <th>Time Visitante</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <div class="table-wrapper">
+    <h3>Espanha - La Liga</h3>
+    <table id="ligaSpain">
+      <thead>
+        <tr>
+          <th>Data</th>
+          <th>Time Casa</th>
+          <th>Placar</th>
+          <th>Time Visitante</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <div class="table-wrapper">
+    <h3>Brasil - Brasileirão</h3>
+    <table id="ligaBrazil">
+      <thead>
+        <tr>
+          <th>Data</th>
+          <th>Time Casa</th>
+          <th>Placar</th>
+          <th>Time Visitante</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <div class="table-wrapper">
+    <h3>Argentina - Primera División</h3>
+    <table id="ligaArgentina">
+      <thead>
+        <tr>
+          <th>Data</th>
+          <th>Time Casa</th>
+          <th>Placar</th>
+          <th>Time Visitante</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <div class="table-wrapper">
+    <h3>Copa Libertadores</h3>
+    <table id="ligaLibertadores">
+      <thead>
+        <tr>
+          <th>Data</th>
+          <th>Time Casa</th>
+          <th>Placar</th>
+          <th>Time Visitante</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <div class="table-wrapper">
+    <h3>Copa Sul-Americana</h3>
+    <table id="ligaSulamericana">
+      <thead>
+        <tr>
+          <th>Data</th>
+          <th>Time Casa</th>
+          <th>Placar</th>
+          <th>Time Visitante</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</div>
+
+
+<footer>
+  Fernando Posser Sachet - Desenvolvimento Web
+</footer>
+
+<script>
+const matches = [
+  { liga: "Premier League", strHomeTeam: "Manchester United", strAwayTeam: "Chelsea", intHomeScore: 2, intAwayScore: 1, dateEvent: "2025-10-11", strStatus: "Match Finished" },
+  { liga: "La Liga", strHomeTeam: "Real Madrid", strAwayTeam: "Barcelona", intHomeScore: 3, intAwayScore: 2, dateEvent: "2025-10-12", strStatus: "Match Finished" },
+  { liga: "Brasileirão", strHomeTeam: "Flamengo", strAwayTeam: "Palmeiras", intHomeScore: 2, intAwayScore: 2, dateEvent: "2025-10-12", strStatus: "Match Finished" },
+  { liga: "Brasileirão", strHomeTeam: "Corinthians", strAwayTeam: "São Paulo", intHomeScore: null, intAwayScore: null, dateEvent: "2025-10-13", strStatus: "Match Postponed" },
+  { liga: "Primera División", strHomeTeam: "Boca Juniors", strAwayTeam: "River Plate", intHomeScore: 1, intAwayScore: 0, dateEvent: "2025-10-12", strStatus: "Match Finished" },
+  { liga: "Copa Libertadores", strHomeTeam: "Flamengo", strAwayTeam: "Boca Juniors", intHomeScore: 3, intAwayScore: 1, dateEvent: "2025-10-14", strStatus: "Match Finished" },
+  { liga: "Copa Sul-Americana", strHomeTeam: "Independiente", strAwayTeam: "Athletico Paranaense", intHomeScore: null, intAwayScore: null, dateEvent: "2025-10-15", strStatus: "Match Postponed" }
+];
+
+function populateTable(tableBody, matches) {
+  tableBody.innerHTML = '';
+  matches.forEach(match => {
+    const score = (match.intHomeScore === null || match.intAwayScore === null) ? '-' : `${match.intHomeScore} x ${match.intAwayScore}`;
+    const status = (match.intHomeScore === null || match.intAwayScore === null) ? 'Adiado' : 'Finalizado';
+
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td data-label="Data">${match.dateEvent}</td>
+      ${match.liga ? `<td data-label="Liga">${match.liga}</td>` : ''}
+      <td data-label="Time Casa">${match.strHomeTeam}</td>
+      <td data-label="Placar"${status==='Adiado'?' class="adiado"':''}>${score}</td>
+      <td data-label="Time Visitante">${match.strAwayTeam}</td>
+      <td data-label="Status"${status==='Adiado'?' class="adiado"':''}>${status}</td>
+    `;
+    tableBody.appendChild(row);
+  });
+}
+
+populateTable(document.querySelector('#matchesTableAll tbody'), matches);
+populateTable(document.querySelector('#matchesTableFinished tbody'), matches.filter(m => m.intHomeScore !== null && m.intAwayScore !== null));
+populateTable(document.querySelector('#matchesTablePostponed tbody'), matches.filter(m => m.intHomeScore === null || m.intAwayScore === null));
+populateTable(document.querySelector('#ligaEngland tbody'), matches.filter(m => m.liga === "Premier League"));
+populateTable(document.querySelector('#ligaSpain tbody'), matches.filter(m => m.liga === "La Liga"));
+populateTable(document.querySelector('#ligaBrazil tbody'), matches.filter(m => m.liga === "Brasileirão"));
+populateTable(document.querySelector('#ligaArgentina tbody'), matches.filter(m => m.liga === "Primera División"));
+populateTable(document.querySelector('#ligaLibertadores tbody'), matches.filter(m => m.liga === "Copa Libertadores"));
+populateTable(document.querySelector('#ligaSulamericana tbody'), matches.filter(m => m.liga === "Copa Sul-Americana"));
+
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+    document.getElementById(tab.dataset.tab).classList.add('active');
+  });
+});
+
+document.getElementById('searchInput').addEventListener('input', function() {
+  const searchTerm = this.value.toLowerCase();
+  document.querySelectorAll('tbody tr').forEach(row => {
+    const rowText = row.innerText.toLowerCase();
+    row.style.display = rowText.includes(searchTerm) ? '' : 'none';
+  });
+});
+</script>
+
+</body>
+</html>
