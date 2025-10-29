@@ -1,190 +1,38 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Partidas de Futebol</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Partidas de Futebol - Logs com API</title>
 <style>
-  body { 
-    font-family: Arial, sans-serif; 
-    background-color: #f4f4f4; 
-    margin: 20px; 
-  }
-
-  h1 { 
-    margin-bottom: 10px; 
-    text-align: center;
-    font-size: 1.8em;
-  }
-
-  .search-container {
-    text-align: center;
-    margin: 15px 0;
-  }
-
-  .search-container input {
-    width: 90%;
-    max-width: 400px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 25px;
-    font-size: 1em;
-  }
-
-  .tabs { 
-    display: flex; 
-    overflow-x: auto; 
-    margin-bottom: 10px; 
-    cursor: pointer; 
-    border-bottom: 2px solid #ccc;
-  }
-  .tab { 
-    padding: 10px 20px; 
-    background: #ddd; 
-    margin-right: 5px; 
-    border-radius: 5px 5px 0 0; 
-    flex-shrink: 0; 
-    white-space: nowrap;
-    transition: background 0.3s ease;
-  }
-  .tab:hover {
-    background: #59b3dc;
-  }
-  .tab.active { 
-    background: #f4f2f2; 
-    color: rgb(5, 4, 4); 
-    font-weight: bold; 
-  }
-
-  .tab-content { 
-    display: none; 
-  }
-  .tab-content.active { 
-    display: block; 
-  }
-
-  .table-wrapper { 
-    overflow-x: auto; 
-    margin-bottom: 20px; 
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  }
-
-  table { 
-    width: 100%; 
-    border-collapse: collapse; 
-    min-width: 600px; 
-  }
-  th, td { 
-    padding: 10px; 
-    text-align: left; 
-    border: 1px solid #d2e273; 
-  }
-  th { 
-    background-color: #fcfdfc; 
-    color: white; 
-  }
-  tr:nth-child(even) { 
-    background-color: #e8eee8; 
-  }
-
-  .adiado { 
-    font-weight: bold; 
-    color: red; 
-  }
-
-  h3 {
-    margin-top: 20px;
-    background: #4c96af;
-    color: white;
-    padding: 8px;
-    border-radius: 5px;
-    font-size: 1.1em;
-  }
-
-  
-  footer {
-    text-align: center;
-    margin-top: 30px;
-    padding: 15px;
-    background: #bcddf0;
-    color: white;
-    font-weight: bold;
-    border-radius: 8px;
-    font-size: 1em;
-  }
-
-  @media (max-width: 900px) {
-    body { margin: 10px; }
-    h1 { font-size: 1.5em; }
-
-    .tab { 
-      padding: 8px 15px; 
-      font-size: 0.9em; 
-    }
-
-    table {
-      min-width: 100%;
-      font-size: 0.9em;
-    }
-    th, td {
-      padding: 8px;
-    }
-  }
-
-  @media (max-width: 600px) {
-    h1 { font-size: 1.3em; }
-
-    .tab {
-      padding: 6px 10px;
-      font-size: 0.85em;
-    }
-
-    th, td {
-      padding: 6px;
-      font-size: 0.85em;
-    }
-
-    table, thead, tbody, th, td, tr {
-      display: block;
-    }
-
-    thead tr {
-      display: none; 
-    }
-
-    tr {
-      margin-bottom: 10px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      padding: 10px;
-      background: #fff;
-    }
-
-    td {
-      border: none;
-      display: flex;
-      justify-content: space-between;
-      padding: 6px 10px;
-    }
-
-    td::before {
-      content: attr(data-label);
-      font-weight: bold;
-      color: #333;
-    }
-
-    footer {
-      font-size: 0.9em;
-      padding: 10px;
-    }
-  }
+body { font-family: Arial, sans-serif; background:#f4f4f4; margin:20px; }
+h1 { text-align:center; margin-bottom:10px; font-size:1.8em; }
+footer { text-align:center; margin-top:30px; padding:15px; background:#bcddf0; color:white; font-weight:bold; border-radius:8px; font-size:1em; }
+button{cursor:pointer;}
+.search-container{ text-align:center; margin:15px 0; }
+.search-container input{ width:90%; max-width:400px; padding:10px; border:1px solid #ccc; border-radius:25px; font-size:1em; }
+.tabs{display:flex;overflow-x:auto;margin-bottom:10px;cursor:pointer;border-bottom:2px solid #ccc;}
+.tab{padding:10px 20px;background:#ddd;margin-right:5px;border-radius:5px 5px 0 0;flex-shrink:0;white-space:nowrap;transition:background 0.3s;}
+.tab:hover{background:#59b3dc;}
+.tab.active{background:#f4f2f2;color:rgb(5,4,4);font-weight:bold;}
+.table-wrapper{overflow-x:auto;margin-bottom:20px;background:white;border-radius:8px;box-shadow:0 2px 4px rgba(0,0,0,0.1);}
+table{width:100%;border-collapse:collapse;min-width:600px;}
+th,td{padding:10px;text-align:left;border:1px solid #f4f5f5;}
+th{background-color:#4c96af;color:white;}
+tr:nth-child(even){background-color:#e8eee8;}
+.adiado{font-weight:bold;color:red;}
+#modalLogs{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);align-items:center;justify-content:center;}
+#modalLogs div{background:white;width:90%;max-width:800px;padding:20px;border-radius:10px;position:relative;}
+#modalLogs table{width:100%;border-collapse:collapse;}
+#modalLogs button{margin-top:15px;background:rgb(73,94,52);color:white;padding:8px 15px;border:none;border-radius:6px;}
+.log-offline { color: #b0413e; font-weight:600; }
+.log-remote { color: #2f7a3e; font-weight:600; }
+.small { font-size:0.9em; color:#666; }
 </style>
 </head>
 <body>
 
-<h1>Saite de resultados de futebol</h1>
+<h1>Site de Resultados de Futebol</h1>
 
 <div class="search-container">
   <input type="text" id="searchInput" placeholder="Buscar por time, liga ou status...">
@@ -200,16 +48,7 @@
 <div id="all" class="tab-content active">
   <div class="table-wrapper">
     <table id="matchesTableAll">
-      <thead>
-        <tr>
-          <th>Data</th>
-          <th>Liga</th>
-          <th>Time Casa</th>
-          <th>Placar</th>
-          <th>Time Visitante</th>
-          <th>Status</th>
-        </tr>
-      </thead>
+      <thead><tr><th>Data</th><th>Liga</th><th>Time Casa</th><th>Placar</th><th>Time Visitante</th><th>Status</th></tr></thead>
       <tbody></tbody>
     </table>
   </div>
@@ -218,16 +57,7 @@
 <div id="finalizado" class="tab-content">
   <div class="table-wrapper">
     <table id="matchesTableFinished">
-      <thead>
-        <tr>
-          <th>Data</th>
-          <th>Liga</th>
-          <th>Time Casa</th>
-          <th>Placar</th>
-          <th>Time Visitante</th>
-          <th>Status</th>
-        </tr>
-      </thead>
+      <thead><tr><th>Data</th><th>Liga</th><th>Time Casa</th><th>Placar</th><th>Time Visitante</th><th>Status</th></tr></thead>
       <tbody></tbody>
     </table>
   </div>
@@ -236,16 +66,7 @@
 <div id="adiado" class="tab-content">
   <div class="table-wrapper">
     <table id="matchesTablePostponed">
-      <thead>
-        <tr>
-          <th>Data</th>
-          <th>Liga</th>
-          <th>Time Casa</th>
-          <th>Placar</th>
-          <th>Time Visitante</th>
-          <th>Status</th>
-        </tr>
-      </thead>
+      <thead><tr><th>Data</th><th>Liga</th><th>Time Casa</th><th>Placar</th><th>Time Visitante</th><th>Status</th></tr></thead>
       <tbody></tbody>
     </table>
   </div>
@@ -254,162 +75,168 @@
 <div id="ligas" class="tab-content">
   <div class="table-wrapper">
     <h3>Inglaterra - Premier League</h3>
-    <table id="ligaEngland">
-      <thead>
-        <tr>
-          <th>Data</th>
-          <th>Time Casa</th>
-          <th>Placar</th>
-          <th>Time Visitante</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
+    <table id="ligaEngland"><thead><tr><th>Data</th><th>Time Casa</th><th>Placar</th><th>Time Visitante</th><th>Status</th></tr></thead><tbody></tbody></table>
   </div>
-
   <div class="table-wrapper">
     <h3>Espanha - La Liga</h3>
-    <table id="ligaSpain">
-      <thead>
-        <tr>
-          <th>Data</th>
-          <th>Time Casa</th>
-          <th>Placar</th>
-          <th>Time Visitante</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
+    <table id="ligaSpain"><thead><tr><th>Data</th><th>Time Casa</th><th>Placar</th><th>Time Visitante</th><th>Status</th></tr></thead><tbody></tbody></table>
   </div>
-
   <div class="table-wrapper">
     <h3>Brasil - Brasileirão</h3>
-    <table id="ligaBrazil">
-      <thead>
-        <tr>
-          <th>Data</th>
-          <th>Time Casa</th>
-          <th>Placar</th>
-          <th>Time Visitante</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  </div>
-
-  <div class="table-wrapper">
-    <h3>Argentina - Primera División</h3>
-    <table id="ligaArgentina">
-      <thead>
-        <tr>
-          <th>Data</th>
-          <th>Time Casa</th>
-          <th>Placar</th>
-          <th>Time Visitante</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  </div>
-
-  <div class="table-wrapper">
-    <h3>Copa Libertadores</h3>
-    <table id="ligaLibertadores">
-      <thead>
-        <tr>
-          <th>Data</th>
-          <th>Time Casa</th>
-          <th>Placar</th>
-          <th>Time Visitante</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  </div>
-
-  <div class="table-wrapper">
-    <h3>Copa Sul-Americana</h3>
-    <table id="ligaSulamericana">
-      <thead>
-        <tr>
-          <th>Data</th>
-          <th>Time Casa</th>
-          <th>Placar</th>
-          <th>Time Visitante</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
+    <table id="ligaBrazil"><thead><tr><th>Data</th><th>Time Casa</th><th>Placar</th><th>Time Visitante</th><th>Status</th></tr></thead><tbody></tbody></table>
   </div>
 </div>
 
+<div style="text-align:center; margin:20px;">
+  <button id="btnVerLogs" style="padding:10px 20px; border:none; background:#0f1612; color:white; border-radius:8px;">Ver Logs</button>
+</div>
 
-<footer>
-  Fernando Posser Sachet - Desenvolvimento Web
-</footer>
+<div id="modalLogs">
+<div>
+<h2 style="text-align:center;">Logs</h2>
+<p class="small">Os logs são enviados a uma API externa (se configurada). Logs que não foram enviados ficam marcados como <span class="log-offline">offline</span>.</p>
+<table>
+<thead><tr><th>Data</th><th>Ação</th><th>Detalhes</th><th>Fonte</th><th>Excluir</th></tr></thead>
+<tbody id="tabelaLogs"></tbody>
+</table>
+<div style="display:flex;gap:10px;justify-content:flex-end;margin-top:10px;">
+<button id="btnRetryOffline" title="Tenta reenviar logs offline para a API">Reenviar offline</button>
+<button id="fecharModal">Fechar</button>
+</div>
+</div>
+</div>
+
+<footer>Fernando Posser Sachet - Desenvolvimento Web</footer>
 
 <script>
+const LOG_API_URL = 'https://example.com/api/logs'; 
 const matches = [
-  { liga: "Premier League", strHomeTeam: "Manchester United", strAwayTeam: "Chelsea", intHomeScore: 2, intAwayScore: 1, dateEvent: "2025-10-11", strStatus: "Match Finished" },
-  { liga: "La Liga", strHomeTeam: "Real Madrid", strAwayTeam: "Barcelona", intHomeScore: 3, intAwayScore: 2, dateEvent: "2025-10-12", strStatus: "Match Finished" },
-  { liga: "Brasileirão", strHomeTeam: "Flamengo", strAwayTeam: "Palmeiras", intHomeScore: 2, intAwayScore: 2, dateEvent: "2025-10-12", strStatus: "Match Finished" },
-  { liga: "Brasileirão", strHomeTeam: "Corinthians", strAwayTeam: "São Paulo", intHomeScore: null, intAwayScore: null, dateEvent: "2025-10-13", strStatus: "Match Postponed" },
-  { liga: "Primera División", strHomeTeam: "Boca Juniors", strAwayTeam: "River Plate", intHomeScore: 1, intAwayScore: 0, dateEvent: "2025-10-12", strStatus: "Match Finished" },
-  { liga: "Copa Libertadores", strHomeTeam: "Flamengo", strAwayTeam: "Boca Juniors", intHomeScore: 3, intAwayScore: 1, dateEvent: "2025-10-14", strStatus: "Match Finished" },
-  { liga: "Copa Sul-Americana", strHomeTeam: "Independiente", strAwayTeam: "Athletico Paranaense", intHomeScore: null, intAwayScore: null, dateEvent: "2025-10-15", strStatus: "Match Postponed" }
+  { liga: "Premier League", strHomeTeam: "Manchester United", strAwayTeam: "Chelsea", intHomeScore: 2, intAwayScore: 1, dateEvent: "2025-10-11" },
+  { liga: "La Liga", strHomeTeam: "Real Madrid", strAwayTeam: "Barcelona", intHomeScore: 3, intAwayScore: 2, dateEvent: "2025-10-12" },
+  { liga: "Brasileirão", strHomeTeam: "Flamengo", strAwayTeam: "Palmeiras", intHomeScore: 2, intAwayScore: 2, dateEvent: "2025-10-12" },
+  { liga: "Brasileirão", strHomeTeam: "Corinthians", strAwayTeam: "São Paulo", intHomeScore: null, intAwayScore: null, dateEvent: "2025-10-13" }
 ];
+const logs = [];
 
-function populateTable(tableBody, matches) {
-  tableBody.innerHTML = '';
-  matches.forEach(match => {
-    const score = (match.intHomeScore === null || match.intAwayScore === null) ? '-' : `${match.intHomeScore} x ${match.intAwayScore}`;
-    const status = (match.intHomeScore === null || match.intAwayScore === null) ? 'Adiado' : 'Finalizado';
+function nowBR() { return new Date().toLocaleString('pt-BR'); }
+function pushLocalLog(log) { const localId = logs.length ? Math.max(...logs.map(l=>l.id||0))+1 :1; logs.push(Object.assign({id: localId}, log)); }
 
-    const row = document.createElement('tr');
-    row.innerHTML = `
-      <td data-label="Data">${match.dateEvent}</td>
-      ${match.liga ? `<td data-label="Liga">${match.liga}</td>` : ''}
-      <td data-label="Time Casa">${match.strHomeTeam}</td>
-      <td data-label="Placar"${status==='Adiado'?' class="adiado"':''}>${score}</td>
-      <td data-label="Time Visitante">${match.strAwayTeam}</td>
-      <td data-label="Status"${status==='Adiado'?' class="adiado"':''}>${status}</td>
-    `;
+async function sendLogToApi(log) {
+  if (!LOG_API_URL || LOG_API_URL.includes('example.com')) throw new Error('LOG_API_URL não configurada');
+  const resp = await fetch(LOG_API_URL,{ method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(log) });
+  if(!resp.ok) throw new Error(`API retornou ${resp.status}`);
+  return await resp.json();
+}
+
+async function createAndSendLog(acao, detalhes){
+  const logItem={data:nowBR(),acao,detalhes};
+  try{
+    const remote = await sendLogToApi(logItem);
+    pushLocalLog(Object.assign(logItem,{remoteId:remote.id}));
+  }catch(err){
+    pushLocalLog(Object.assign(logItem,{offline:true}));
+    console.warn('Falha ao enviar log, salvo offline:', err.message);
+  }
+}
+
+async function retryOfflineLogs(){
+  const offline = logs.filter(l=>l.offline);
+  for(const l of offline){
+    try{
+      const remote = await sendLogToApi({data:l.data,acao:l.acao,detalhes:l.detalhes});
+      l.remoteId = remote.id; delete l.offline;
+    }catch(err){
+      console.warn('Falha ao reenviar log',l.id,err.message);
+    }
+  }
+  exibirLogs();
+  alert('Reenvio finalizado. Confira a lista de logs.');
+}
+
+function populateTable(tableBody, matches){
+  tableBody.innerHTML='';
+  matches.forEach(m=>{
+    const score=(m.intHomeScore===null||m.intAwayScore===null)?'-':`${m.intHomeScore} x ${m.intAwayScore}`;
+    const status=(m.intHomeScore===null||m.intAwayScore===null)?'Adiado':'Finalizado';
+    const row=document.createElement('tr');
+    row.innerHTML=`<td>${m.dateEvent}</td>${m.liga?`<td>${m.liga}</td>`:''}<td>${m.strHomeTeam}</td><td ${status==='Adiado'?'class="adiado"':''}>${score}</td><td>${m.strAwayTeam}</td><td ${status==='Adiado'?'class="adiado"':''}>${status}</td>`;
     tableBody.appendChild(row);
   });
 }
 
-populateTable(document.querySelector('#matchesTableAll tbody'), matches);
-populateTable(document.querySelector('#matchesTableFinished tbody'), matches.filter(m => m.intHomeScore !== null && m.intAwayScore !== null));
-populateTable(document.querySelector('#matchesTablePostponed tbody'), matches.filter(m => m.intHomeScore === null || m.intAwayScore === null));
-populateTable(document.querySelector('#ligaEngland tbody'), matches.filter(m => m.liga === "Premier League"));
-populateTable(document.querySelector('#ligaSpain tbody'), matches.filter(m => m.liga === "La Liga"));
-populateTable(document.querySelector('#ligaBrazil tbody'), matches.filter(m => m.liga === "Brasileirão"));
-populateTable(document.querySelector('#ligaArgentina tbody'), matches.filter(m => m.liga === "Primera División"));
-populateTable(document.querySelector('#ligaLibertadores tbody'), matches.filter(m => m.liga === "Copa Libertadores"));
-populateTable(document.querySelector('#ligaSulamericana tbody'), matches.filter(m => m.liga === "Copa Sul-Americana"));
+function exibirLogs(){
+  const tbody=document.getElementById('tabelaLogs'); tbody.innerHTML='';
+  if(!logs.length){tbody.innerHTML='<tr><td colspan="5" style="text-align:center;">Nenhum log registrado</td></tr>'; return;}
+  logs.slice().reverse().forEach(log=>{
+    const tr=document.createElement('tr');
+    const fonte = log.offline?'<span class="log-offline">offline</span>':(log.remoteId?'<span class="log-remote">remoto</span>':'<span class="small">local</span>');
+    tr.innerHTML=`<td>${log.data}</td><td>${log.acao}</td><td>${log.detalhes}</td><td>${fonte}</td><td><button data-id="${log.id}" class="btn-excluir" style="background:#d9534f;color:white;border:none;border-radius:5px;padding:5px 10px;">Excluir</button></td>`;
+    tbody.appendChild(tr);
+  });
+  tbody.querySelectorAll('.btn-excluir').forEach(btn=>{
+    btn.addEventListener('click',async ()=>{
+      const id=Number(btn.dataset.id);
+      const idx=logs.findIndex(l=>l.id===id);
+      if(idx!==-1){
+        const item = logs[idx];
+        if(item.remoteId && confirm('Remover também do servidor remoto?')){
+          try{
+            if(!LOG_API_URL || LOG_API_URL.includes('example.com')) throw new Error('LOG_API_URL não configurada');
+            const resp=await fetch(`${LOG_API_URL}/${item.remoteId}`,{method:'DELETE'});
+            if(!resp.ok) throw new Error('Falha ao excluir no servidor');
+          }catch(err){console.warn('Falha ao excluir no servidor:',err.message);}
+        }
+        logs.splice(idx,1); exibirLogs();
+      }
+    });
+  });
+}
 
-document.querySelectorAll('.tab').forEach(tab => {
-  tab.addEventListener('click', () => {
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+populateTable(document.querySelector('#matchesTableAll tbody'),matches);
+populateTable(document.querySelector('#matchesTableFinished tbody'),matches.filter(m=>m.intHomeScore!==null&&m.intAwayScore!==null));
+populateTable(document.querySelector('#matchesTablePostponed tbody'),matches.filter(m=>m.intHomeScore===null||m.intAwayScore===null));
+populateTable(document.querySelector('#ligaEngland tbody'),matches.filter(m=>m.liga==="Premier League"));
+populateTable(document.querySelector('#ligaSpain tbody'),matches.filter(m=>m.liga==="La Liga"));
+populateTable(document.querySelector('#ligaBrazil tbody'),matches.filter(m=>m.liga==="Brasileirão"));
+
+
+document.querySelectorAll('.tab').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
     tab.classList.add('active');
-    document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(tc=>tc.classList.remove('active'));
     document.getElementById(tab.dataset.tab).classList.add('active');
+    createAndSendLog('Alterar Tab',`Clicou na aba '${tab.innerText.trim()}'`);
   });
 });
 
-document.getElementById('searchInput').addEventListener('input', function() {
-  const searchTerm = this.value.toLowerCase();
-  document.querySelectorAll('tbody tr').forEach(row => {
-    const rowText = row.innerText.toLowerCase();
-    row.style.display = rowText.includes(searchTerm) ? '' : 'none';
-  });
+
+let searchTimeout=null;
+document.getElementById('searchInput').addEventListener('input',function(){
+  const term=this.value;
+  document.querySelectorAll('tbody tr').forEach(row=>{row.style.display=row.innerText.toLowerCase().includes(term.toLowerCase())?'':'none';});
+  if(searchTimeout) clearTimeout(searchTimeout);
+  searchTimeout=setTimeout(()=>{if(term.trim()!=='') createAndSendLog('Buscar Partida',`Buscou por '${term.trim()}'`);},700);
 });
+
+
+document.getElementById('btnVerLogs').addEventListener('click',async ()=>{
+  createAndSendLog('Visualizar Logs','Usuário abriu o modal de logs');
+  exibirLogs();
+  document.getElementById('modalLogs').style.display='flex';
+});
+document.getElementById('fecharModal').addEventListener('click',()=>{document.getElementById('modalLogs').style.display='none';});
+document.getElementById('btnRetryOffline').addEventListener('click',async ()=>{await retryOfflineLogs();});
+
+
+(function seedLocalLogs(){
+  pushLocalLog({data:"28/10/2025 09:00:00",acao:"Carregar Site",detalhes:"O site foi carregado localmente (seed)."});
+  pushLocalLog({data:"28/10/2025 09:05:00",acao:"Visualizar Partidas",detalhes:"Usuário navegou pelas partidas (seed)."});
+})();
+
+
+setInterval(retryOfflineLogs,30000);
+
 </script>
 
 </body>
